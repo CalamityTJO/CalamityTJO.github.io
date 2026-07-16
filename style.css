@@ -406,6 +406,36 @@ section h2 { border-left-color: var(--accent); }
 	transform: translateX(-50%) translateY(0);
 }
 
+/* ---- Fun facts ---- */
+.facts-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 18px;
+}
+.fact-card {
+	background: var(--bg-lighter);
+	border: 1px solid var(--dark-grey);
+	border-radius: var(--radius);
+	border-left: 3px solid var(--accent);
+	padding: 20px;
+	display: flex;
+	gap: 14px;
+	align-items: flex-start;
+	transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.fact-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.fact-icon {
+	font-size: 24px;
+	line-height: 1.2;
+	flex-shrink: 0;
+}
+.fact-card p {
+	color: var(--light-grey);
+	font-size: 14px;
+	margin: 0;
+}
+.fact-card strong { color: var(--white); }
+
 /* ---- Lightsaber easter-egg cursor trail ---- */
 .saber-spark {
 	position: fixed;
