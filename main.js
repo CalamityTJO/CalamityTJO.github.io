@@ -4,29 +4,31 @@
 
 	var body = document.body;
 
-	/* ---- Faction accent toggle (persisted) ---- */
-	var factionToggle = document.getElementById("factionToggle");
-	function applyFaction(faction) {
-		body.setAttribute("data-faction", faction);
-		if (factionToggle) {
-			var label = factionToggle.querySelector(".faction-label");
-			if (label) label.textContent = faction === "sith" ? "Sith" : "Jedi";
+	/* ---- Light/dark theme toggle (persisted) ---- */
+	var themeToggle = document.getElementById("themeToggle");
+	function applyTheme(theme) {
+		body.setAttribute("data-theme", theme);
+		if (themeToggle) {
+			var icon = themeToggle.querySelector(".theme-icon");
+			if (icon) icon.textContent = theme === "light" ? "☀️" : "🌙";
 		}
 	}
-	var savedFaction = null;
+	var savedTheme = null;
 	try {
-		savedFaction = localStorage.getItem("faction");
+		savedTheme = localStorage.getItem("theme");
 	} catch (e) {}
-	applyFaction(savedFaction === "sith" ? "sith" : "jedi");
+	if (!savedTheme && window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+		savedTheme = "light";
+	}
+	applyTheme(savedTheme === "light" ? "light" : "dark");
 
-	if (factionToggle) {
-		factionToggle.addEventListener("click", function () {
-			var next = body.getAttribute("data-faction") === "sith" ? "jedi" : "sith";
-			applyFaction(next);
+	if (themeToggle) {
+		themeToggle.addEventListener("click", function () {
+			var next = body.getAttribute("data-theme") === "light" ? "dark" : "light";
+			applyTheme(next);
 			try {
-				localStorage.setItem("faction", next);
+				localStorage.setItem("theme", next);
 			} catch (e) {}
-			showToast(next === "sith" ? "Switched to the dark side" : "Back to the light");
 		});
 	}
 
@@ -77,24 +79,7 @@
 		});
 	});
 
-	/* ---- Scroll reveal + stat count-up ---- */
-	function animateStat(el) {
-		var target = parseInt(el.getAttribute("data-target"), 10) || 0;
-		var prefix = el.getAttribute("data-prefix") || "";
-		var suffix = el.getAttribute("data-suffix") || "";
-		var start = null;
-		var duration = 1100;
-		function step(timestamp) {
-			if (start === null) start = timestamp;
-			var progress = Math.min((timestamp - start) / duration, 1);
-			var eased = 1 - Math.pow(1 - progress, 3);
-			var current = Math.round(target * eased);
-			el.textContent = prefix + current.toLocaleString() + suffix;
-			if (progress < 1) requestAnimationFrame(step);
-		}
-		requestAnimationFrame(step);
-	}
-
+	/* ---- Scroll reveal ---- */
 	var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	if ("IntersectionObserver" in window && !reduceMotion) {
@@ -103,8 +88,6 @@
 				entries.forEach(function (entry) {
 					if (!entry.isIntersecting) return;
 					entry.target.classList.add("in-view");
-					var stats = entry.target.querySelectorAll(".stat-num");
-					Array.prototype.forEach.call(stats, animateStat);
 					observer.unobserve(entry.target);
 				});
 			},
@@ -116,11 +99,6 @@
 	} else {
 		Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function (el) {
 			el.classList.add("in-view");
-		});
-		Array.prototype.forEach.call(document.querySelectorAll(".stat-num"), function (el) {
-			var prefix = el.getAttribute("data-prefix") || "";
-			var suffix = el.getAttribute("data-suffix") || "";
-			el.textContent = prefix + (parseInt(el.getAttribute("data-target"), 10) || 0).toLocaleString() + suffix;
 		});
 	}
 
@@ -136,13 +114,13 @@
 		});
 	}
 
-	/* ---- Konami-code easter egg: lightsaber cursor trail ---- */
+	/* ---- Konami-code easter egg: cursor spark trail ---- */
 	var sequence = [
 		"ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
 		"ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a",
 	];
 	var progress = 0;
-	var saberOn = false;
+	var trailOn = false;
 	var lastSpark = 0;
 
 	document.addEventListener("keydown", function (event) {
@@ -152,8 +130,8 @@
 			progress += 1;
 			if (progress === sequence.length) {
 				progress = 0;
-				saberOn = !saberOn;
-				showToast(saberOn ? "Lightsaber ignited" : "Lightsaber off");
+				trailOn = !trailOn;
+				showToast(trailOn ? "Trail mode on" : "Trail mode off");
 			}
 		} else {
 			progress = key === sequence[0] ? 1 : 0;
@@ -161,12 +139,12 @@
 	});
 
 	document.addEventListener("mousemove", function (event) {
-		if (!saberOn) return;
+		if (!trailOn) return;
 		var now = Date.now();
 		if (now - lastSpark < 24) return;
 		lastSpark = now;
 		var spark = document.createElement("div");
-		spark.className = "saber-spark";
+		spark.className = "cursor-spark";
 		spark.style.left = event.clientX - 3 + "px";
 		spark.style.top = event.clientY - 3 + "px";
 		document.body.appendChild(spark);

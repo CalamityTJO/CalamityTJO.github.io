@@ -260,12 +260,11 @@ footer {
 @media (max-width: 600px) {
 	.hero { padding: 70px 0 40px; }
 	.hero h1 { font-size: 32px; }
-	.faction-toggle { top: 12px; right: 12px; }
+	.theme-toggle { top: 12px; right: 12px; }
 }
 
-/* ---- Faction accent theming ---- */
+/* ---- Accent + interactive states ---- */
 :root { --accent: var(--blue); }
-body[data-faction="sith"] { --accent: var(--red); }
 
 .contact-links a:hover { border-color: var(--accent); }
 .skill-tag:hover { border-color: var(--accent); color: var(--white); }
@@ -284,34 +283,36 @@ section h2 { border-left-color: var(--accent); }
 }
 .skill-tag:hover { transform: translateY(-1px); }
 
-/* ---- Faction toggle button ---- */
-.faction-toggle {
+/* ---- Light/dark theme ---- */
+body[data-theme="light"] {
+	--bg: #f4f5f6;
+	--bg-lighter: #ffffff;
+	--bg-darker: #e7e9eb;
+	--white: #1c1d1f;
+	--light-grey: #3a3d40;
+	--medium-grey: #5b5f63;
+	--dark-grey: #d8dadc;
+}
+
+/* ---- Theme toggle button ---- */
+.theme-toggle {
 	position: fixed;
 	top: 18px;
 	right: 18px;
 	z-index: 50;
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
 	background: var(--bg-lighter);
 	border: 1px solid var(--dark-grey);
 	border-radius: 999px;
-	padding: 7px 14px 7px 10px;
-	color: var(--light-grey);
-	font-family: var(--font);
-	font-size: 13px;
+	font-size: 16px;
 	cursor: pointer;
 	transition: border-color 0.15s ease, transform 0.15s ease;
 }
-.faction-toggle:hover { border-color: var(--accent); transform: translateY(-1px); }
-.faction-dot {
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
-	background: var(--accent);
-	box-shadow: 0 0 8px var(--accent);
-	transition: background 0.2s ease, box-shadow 0.2s ease;
-}
+.theme-toggle:hover { border-color: var(--accent); transform: translateY(-1px); }
 
 /* ---- Hero rotator line ---- */
 .hero-rotator {
@@ -322,31 +323,6 @@ section h2 { border-left-color: var(--accent); }
 .hero-rotator #rotator {
 	color: var(--accent);
 	font-weight: 600;
-}
-
-/* ---- Stats ---- */
-.stats-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	gap: 18px;
-}
-.stat-card {
-	background: var(--bg-lighter);
-	border: 1px solid var(--dark-grey);
-	border-radius: var(--radius);
-	padding: 24px 20px;
-	text-align: center;
-}
-.stat-num {
-	font-size: 34px;
-	font-weight: 700;
-	color: var(--accent);
-	line-height: 1.1;
-}
-.stat-label {
-	color: var(--medium-grey);
-	font-size: 13px;
-	margin-top: 8px;
 }
 
 /* ---- Scroll reveal ---- */
@@ -436,8 +412,8 @@ section h2 { border-left-color: var(--accent); }
 }
 .fact-card strong { color: var(--white); }
 
-/* ---- Lightsaber easter-egg cursor trail ---- */
-.saber-spark {
+/* ---- Easter-egg cursor trail ---- */
+.cursor-spark {
 	position: fixed;
 	width: 6px;
 	height: 6px;
