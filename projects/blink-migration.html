@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Blink Network Migration — Calamity</title>
+	<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+	<div class="container">
+		<a class="back-link" href="../index.html">← Back to projects</a>
+	</div>
+
+	<div class="project-header">
+		<div class="container">
+			<h1>Blink Network Migration</h1>
+			<div class="tags"><span>Networking</span><span>Performance</span><span>Buffer Protocol</span></div>
+		</div>
+	</div>
+
+	<div class="container project-body">
+		<h2>Overview</h2>
+		<p>
+			Migrated a legacy per-instance RemoteEvent signal architecture (dozens of individual signals for combat
+			and Force-power effects) onto Blink, a buffer-based network codegen tool — collapsing the whole layer
+			down to two batched RemoteEvents server-wide.
+		</p>
+
+		<h2>Problem</h2>
+		<p>
+			The old system created a separate RemoteEvent-backed signal per gameplay instance (one per character for
+			each Force effect, for example). On a 40–70 player server this meant a large burst of individual remote
+			fires any time an ability rippled across multiple players — a known cause of client-side stalls when
+			several fired in the same frame.
+		</p>
+
+		<h2>Approach</h2>
+		<p>
+			Rather than rewrite every call site, the migration kept the old <code>:Fire</code> / <code>:FireAll</code>
+			API shape intact through a thin adapter layer, while the actual wire format switched to Blink's buffer
+			encoding underneath. A single central dispatcher per side (client/server) routes incoming buffer events
+			to the right component/handler by target and kind — replacing what used to be N separate signal
+			connections with one dispatch table lookup.
+		</p>
+		<pre><code>-- old: one Comm signal per character per effect kind
+self.Comm:CreateSignal("ForceEffect_" .. characterId .. "_" .. kind)
+
+-- new: single batched event, kind + target resolved at dispatch
+ForceEffect.On(targetCharacter, kind, args) --> handler lookup, not a new connection</code></pre>
+
+		<h2>Result</h2>
+		<p>
+			Two RemoteEvents total instead of one per gameplay instance. Existing gameplay code needed no changes at
+			the call site — only the transport underneath moved — which kept the migration low-risk to ship into a
+			live game.
+		</p>
+	</div>
+
+	<footer>
+		<div class="container">Calamity — built with plain HTML/CSS/JS, hosted on GitHub Pages</div>
+	</footer>
+</body>
+</html>

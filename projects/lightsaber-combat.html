@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Lightsaber Combat Framework — Calamity</title>
+	<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+	<div class="container">
+		<a class="back-link" href="../index.html">← Back to projects</a>
+	</div>
+
+	<div class="project-header">
+		<div class="container">
+			<h1>Lightsaber Combat Framework</h1>
+			<div class="tags"><span>Luau</span><span>Combat</span><span>Server-Authoritative</span></div>
+		</div>
+	</div>
+
+	<div class="container project-body">
+		<h2>Overview</h2>
+		<p>
+			A request/response combat system driving all lightsaber interactions — attacks, blocks, parries, and
+			kill confirmation — between client input and server-validated outcomes, built to stay responsive under
+			real player-count load.
+		</p>
+
+		<h2>Problem</h2>
+		<p>
+			Melee combat is latency-sensitive: players expect instant feedback on swings and blocks, but every hit
+			has to be validated server-side or the game becomes trivially exploitable. The framework needed a clear
+			enum of request types so client and server always agree on what a given signal means, without a giant
+			branching mess on either side.
+		</p>
+
+		<h2>Architecture</h2>
+		<p>
+			Every combat action is a numbered request in <code>CombatConstants.ENUM.REQUEST</code>. The client
+			fires a request, the server validates state (stamina, cooldowns, distance, target legitimacy) and
+			responds with the resolved outcome, which the client then plays back as VFX/animation — the server
+			never trusts the client's own read of "did this hit land."
+		</p>
+		<pre><code>-- client: request a swing
+LightsaberSignal:Fire(CombatConstants.ENUM.REQUEST.Swing, { targetId = target })
+
+-- server: validate, then respond with resolved outcome
+function Lightsaber:HandleSignal(player, request, arguments)
+	if request == REQUEST.Swing then
+		if not self:CanSwing(player) then return end
+		local resolved = self:ResolveSwing(player, arguments)
+		self.LightsaberSignal:Fire(player, REQUEST.SwingResult, resolved)
+	end
+end</code></pre>
+
+		<h2>Result</h2>
+		<p>
+			A single dispatch point per side keeps combat logic auditable — every new attack type is one enum entry
+			and one handler branch, not a new remote. Server stays the single source of truth for hit resolution
+			while client-side playback keeps combat feeling immediate.
+		</p>
+	</div>
+
+	<footer>
+		<div class="container">Calamity — built with plain HTML/CSS/JS, hosted on GitHub Pages</div>
+	</footer>
+</body>
+</html>

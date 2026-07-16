@@ -1,0 +1,263 @@
+:root {
+	--bg: #1c1d1f;
+	--bg-lighter: #26282b;
+	--bg-darker: #141516;
+	--border: #000;
+	--white: #f2f2f2;
+	--light-grey: #b8bcc0;
+	--medium-grey: #8a8f94;
+	--dark-grey: #3a3d40;
+	--blue: #4d7fff;
+	--red: #d9484a;
+	--radius: 5px;
+	--font: "Segoe UI", "Ubuntu", -apple-system, sans-serif;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: var(--bg);
+	color: var(--white);
+	font-family: var(--font);
+	line-height: 1.5;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.container {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+/* Hero */
+.hero {
+	padding: 100px 0 60px;
+	text-align: center;
+	border-bottom: 1px solid var(--dark-grey);
+}
+
+.hero h1 {
+	font-size: 42px;
+	font-weight: 700;
+}
+
+.hero h1 span {
+	background: linear-gradient(90deg, var(--blue), var(--red));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.hero p {
+	color: var(--light-grey);
+	font-size: 18px;
+	margin-top: 12px;
+}
+
+.contact-links {
+	display: flex;
+	justify-content: center;
+	gap: 14px;
+	margin-top: 24px;
+	flex-wrap: wrap;
+}
+
+.contact-links a {
+	background: var(--bg-lighter);
+	border: 1px solid var(--dark-grey);
+	border-radius: var(--radius);
+	padding: 8px 16px;
+	font-size: 14px;
+	transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.contact-links a:hover {
+	border-color: var(--blue);
+	transform: translateY(-1px);
+}
+
+/* Sections */
+section {
+	padding: 60px 0;
+}
+
+section h2 {
+	font-size: 26px;
+	margin-bottom: 24px;
+	border-left: 3px solid var(--blue);
+	padding-left: 12px;
+}
+
+/* About */
+.about p {
+	color: var(--light-grey);
+	max-width: 700px;
+}
+
+/* Skills */
+.skills-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.skill-tag {
+	background: var(--bg-lighter);
+	border: 1px solid var(--dark-grey);
+	border-radius: var(--radius);
+	padding: 8px 14px;
+	font-size: 14px;
+	color: var(--light-grey);
+}
+
+/* Projects */
+.projects-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 18px;
+}
+
+.project-card {
+	background: var(--bg-lighter);
+	border: 1px solid var(--dark-grey);
+	border-radius: var(--radius);
+	padding: 22px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.project-card:hover {
+	border-color: var(--blue);
+	transform: translateY(-2px);
+}
+
+.project-card h3 {
+	font-size: 19px;
+}
+
+.project-card p {
+	color: var(--light-grey);
+	font-size: 14px;
+	flex-grow: 1;
+}
+
+.project-card .tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 4px 0;
+}
+
+.project-card .tags span {
+	font-size: 11px;
+	color: var(--medium-grey);
+	background: var(--bg-darker);
+	border-radius: 3px;
+	padding: 3px 8px;
+}
+
+.project-card .view-link {
+	color: var(--blue);
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.project-card .view-link:hover {
+	text-decoration: underline;
+}
+
+/* Footer */
+footer {
+	text-align: center;
+	padding: 30px 0;
+	color: var(--medium-grey);
+	font-size: 13px;
+	border-top: 1px solid var(--dark-grey);
+}
+
+/* Project detail pages */
+.back-link {
+	display: inline-block;
+	margin: 30px 0 10px;
+	color: var(--light-grey);
+	font-size: 14px;
+}
+
+.back-link:hover {
+	color: var(--blue);
+}
+
+.project-header {
+	padding: 20px 0 40px;
+	border-bottom: 1px solid var(--dark-grey);
+}
+
+.project-header h1 {
+	font-size: 34px;
+}
+
+.project-header .tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-top: 14px;
+}
+
+.project-header .tags span {
+	font-size: 12px;
+	color: var(--medium-grey);
+	background: var(--bg-lighter);
+	border: 1px solid var(--dark-grey);
+	border-radius: 3px;
+	padding: 4px 10px;
+}
+
+.project-body h2 {
+	font-size: 22px;
+	margin: 34px 0 14px;
+	border-left: 3px solid var(--red);
+	padding-left: 12px;
+}
+
+.project-body p {
+	color: var(--light-grey);
+	max-width: 760px;
+	margin-bottom: 12px;
+}
+
+.project-body ul {
+	color: var(--light-grey);
+	max-width: 760px;
+	padding-left: 22px;
+	margin-bottom: 12px;
+}
+
+.project-body pre {
+	background: var(--bg-darker);
+	border: 1px solid var(--dark-grey);
+	border-radius: var(--radius);
+	padding: 18px;
+	overflow-x: auto;
+	font-size: 13px;
+	margin: 16px 0;
+}
+
+.project-body code {
+	font-family: "Consolas", "Courier New", monospace;
+	color: var(--light-grey);
+}
+
+@media (max-width: 600px) {
+	.hero { padding: 70px 0 40px; }
+	.hero h1 { font-size: 32px; }
+}

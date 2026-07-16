@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>AI Boss/Minion Combat — Calamity</title>
+	<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+	<div class="container">
+		<a class="back-link" href="../index.html">← Back to projects</a>
+	</div>
+
+	<div class="project-header">
+		<div class="container">
+			<h1>AI Boss/Minion Combat</h1>
+			<div class="tags"><span>Luau</span><span>AI</span><span>Combat</span><span>Component-Based</span></div>
+		</div>
+	</div>
+
+	<div class="container project-body">
+		<h2>Overview</h2>
+		<p>
+			A phase-driven NPC AI system for raid-style boss encounters — bosses cycle through skill phases, spawn
+			and coordinate minions, and equip dynamically-built lightsaber loadouts, all running server-side against
+			the same combat framework real players use.
+		</p>
+
+		<h2>Problem</h2>
+		<p>
+			Boss fights need to feel scripted and readable to players (clear phase telegraphs, fair timing windows)
+			while staying entirely server-driven — no client-side animation can be trusted to gate damage. The AI
+			also has to reuse the existing player combat pipeline rather than fork a separate one, so any lightsaber
+			or Force-power balance change applies to bosses for free.
+		</p>
+
+		<h2>Architecture</h2>
+		<p>
+			Tag-based server components drive each boss instance. A phase controller advances through a skill list
+			on timers and health thresholds, calling into the same Lightsaber signal/combat request handlers a real
+			player's client would trigger — the boss is, from the combat system's perspective, just another
+			combatant with a scripted "player". Saber builds come from the same <code>CustomisationUtil</code>
+			pipeline used for player character customization, so new boss loadouts require no new code, just data.
+		</p>
+
+		<h2>Minion Coordination</h2>
+		<p>
+			Minions spawn on boss-phase triggers and register with the boss component via Janitor-managed
+			connections, so a boss death or phase transition cleanly tears down every minion it owns without manual
+			bookkeeping per spawn.
+		</p>
+
+		<h2>Result</h2>
+		<p>
+			Reused 100% of the existing combat/damage pipeline for AI encounters — no parallel "NPC combat" system
+			to maintain — while keeping per-encounter authoring down to a data file plus a phase list.
+		</p>
+	</div>
+
+	<footer>
+		<div class="container">Calamity — built with plain HTML/CSS/JS, hosted on GitHub Pages</div>
+	</footer>
+</body>
+</html>
