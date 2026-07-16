@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Kessel Sabacc — Calamity</title>
+	<title>Kessel Sabacc - Calamity</title>
 	<link rel="stylesheet" href="../style.css" />
 </head>
 <body>
@@ -21,16 +21,16 @@
 	<div class="container project-body">
 		<h2>Overview</h2>
 		<p>
-			A fully networked, turn-based card game running inside a live 40–70 player Roblox server. Multiple
-			simultaneous tables, seated multiplayer, buy-in economy, and a shift-token ability layer that lets
-			players bend the rules of a hand mid-round.
+			This is a fully networked, turn-based card game running inside a live 40-70 player Roblox server.
+			Multiple tables run at once, players sit down at them together, there's a buy-in economy, and a
+			shift-token ability layer that lets players bend the rules of a hand mid-round.
 		</p>
 
 		<h2>Problem</h2>
 		<p>
-			Card games need strict, provably-fair server authority — the client can never be trusted with hand
-			state — while still feeling instant to the players at the table. That means turn structure, draw
-			resolution, and scoring all live server-side, replicated down through a state store the UI reacts to.
+			Card games need real server authority. You can't trust the client with hand state, full stop, but the
+			game still has to feel instant to the players sitting at the table. So turn structure, draw resolution,
+			and scoring all live server-side, and get replicated down through a state store the UI reacts to.
 		</p>
 
 		<h2>Architecture</h2>
@@ -38,27 +38,27 @@
 		<pre><code>WAITING → VOTING → DEALING → PLAYING → REVEAL → IMPOSTOR_CHOICE? → SCORING → loop / GAME_OVER</code></pre>
 		<p>
 			A pure state module (<code>GameStateModule</code>) owns turn advancement, cycle resets, and active-player
-			tracking, completely decoupled from networking — so game logic can be unit tested without a live server.
-			The service layer wraps it, validates all client input at the boundary, and dispatches Rodux actions that
-			replicate only to the players who need them.
+			tracking, and it's completely decoupled from networking, so I can unit test game logic without a live
+			server. The service layer wraps it, validates all client input at the boundary, and dispatches Rodux
+			actions that replicate only to the players who actually need them.
 		</p>
 
 		<h2>Shift Tokens</h2>
 		<p>
-			A pluggable ability system — free draw, chip refunds, embezzlement, and a "major fraud" token that forces
-			every Impostor card to a fixed value for the round. New tokens register in one data table and
-			automatically pick up backpack tools, hotbar slots, and Cmdr admin support.
+			This is a pluggable ability system: free draw, chip refunds, embezzlement, and a "major fraud" token that
+			forces every Impostor card to a fixed value for the round. New tokens just register in one data table
+			and automatically pick up backpack tools, hotbar slots, and Cmdr admin support.
 		</p>
 
 		<h2>Result</h2>
 		<p>
-			Stable multi-table concurrent play with anonymous-identity masking for certain factions, buy-in economy
-			tied into the wider server economy, and zero desync issues across a full production season.
+			Stable multi-table concurrent play, with anonymous-identity masking for certain factions, a buy-in
+			economy tied into the wider server economy, and zero desync issues across a full production season.
 		</p>
 	</div>
 
 	<footer>
-		<div class="container">Calamity — built with plain HTML/CSS/JS, hosted on GitHub Pages</div>
+		<div class="container">Calamity, built with plain HTML/CSS/JS, hosted on GitHub Pages</div>
 	</footer>
 </body>
 </html>
