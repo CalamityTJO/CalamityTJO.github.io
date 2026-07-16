@@ -8,19 +8,25 @@
 </head>
 <body>
 
+	<button id="factionToggle" class="faction-toggle" type="button" aria-label="Switch faction theme" title="Switch alignment (Jedi / Sith)">
+		<span class="faction-dot"></span>
+		<span class="faction-label">Jedi</span>
+	</button>
+
 	<section class="hero">
 		<div class="container">
 			<h1><span>Calamity</span></h1>
 			<p>Roblox Systems Engineer. I build server-authoritative gameplay, networking, and game architecture.</p>
+			<p class="hero-rotator">Focused on <span id="rotator">reliability</span>.</p>
 			<div class="contact-links">
-				<a href="mailto:calamitytjo@gmail.com">Email</a>
-				<a href="https://discord.com/users/calamity0" target="_blank" rel="noopener">Discord: calamity0</a>
+				<a href="mailto:calamitytjo@gmail.com" data-copy="calamitytjo@gmail.com">Email</a>
+				<a href="https://discord.com/users/calamity0" data-copy="calamity0" target="_blank" rel="noopener">Discord: calamity0</a>
 				<a href="https://github.com/CalamityTJO" target="_blank" rel="noopener">GitHub</a>
 			</div>
 		</div>
 	</section>
 
-	<section class="about">
+	<section class="about reveal">
 		<div class="container">
 			<h2>About</h2>
 			<p>
@@ -31,7 +37,31 @@
 		</div>
 	</section>
 
-	<section class="skills">
+	<section class="stats reveal">
+		<div class="container">
+			<h2>By the Numbers</h2>
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-num" data-target="1270" data-suffix="+">0</div>
+					<div class="stat-label">Source files in the live game</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-num" data-target="70" data-prefix="40-">0</div>
+					<div class="stat-label">Concurrent players per server</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-num" data-target="40" data-suffix="+">0</div>
+					<div class="stat-label">Unit test specs I maintain</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-num" data-target="2" data-prefix="just ">0</div>
+					<div class="stat-label">RemoteEvents after the Blink migration</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="skills reveal">
 		<div class="container">
 			<h2>Skills</h2>
 			<div class="skills-grid">
@@ -53,7 +83,7 @@
 		</div>
 	</section>
 
-	<section class="projects">
+	<section class="projects reveal">
 		<div class="container">
 			<h2>Projects</h2>
 			<div class="projects-grid">
@@ -102,7 +132,7 @@
 
 				<div class="project-card">
 					<h3>Discord Bots</h3>
-					<p>Built Discord bots for community/server use, including the JSC bot and the SNN bot.</p>
+					<p>I build Discord bots too: command handling, role and permission logic, and integrations that hook a community's server into the stuff it actually needs.</p>
 					<div class="tags"><span>Discord.js / API</span><span>Bots</span></div>
 				</div>
 
@@ -116,5 +146,9 @@
 		</div>
 	</footer>
 
+	<button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+	<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+	<script src="main.js"></script>
 </body>
 </html>

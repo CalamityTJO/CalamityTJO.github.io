@@ -21,10 +21,17 @@
 	<div class="container project-body">
 		<h2>Overview</h2>
 		<p>
-			Beyond working in an existing combat framework, I've designed and built abilities inside it: Force
-			Pull, an Affliction debuff that slows and marks a target, and Force Bubble, a protective barricade
-			with rank-scaled buffs and its own animation and VFX pass.
+			Beyond working in an existing combat framework, I've designed and built abilities inside it. Each one
+			is a self-contained module with its own cooldown, targeting, validation, and VFX, plugged into a
+			shared ability pipeline so the rest of the game doesn't need to know the specifics.
 		</p>
+
+		<h2>Abilities I've built</h2>
+		<ul>
+			<li><strong>Force Pull</strong>: target acquisition, cooldown gating, and a capped number of targets yanked per cast so it can't be chained into a stun-lock.</li>
+			<li><strong>Affliction</strong>: a debuff that slows a target and marks them, with the slow amount and regen penalty scaled by the caster's rank.</li>
+			<li><strong>Force Bubble</strong>: a protective barricade with rank-scaled buffs, its own ignite/active animations, VFX, and caster-lock rules (you can't pop it while choked, stasised, or mind-tricked).</li>
+		</ul>
 
 		<h2>Why it matters</h2>
 		<p>
@@ -43,5 +50,10 @@
 	<footer>
 		<div class="container">Calamity, built with plain HTML/CSS/JS, hosted on GitHub Pages</div>
 	</footer>
+
+	<button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+	<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+	<script src="../main.js"></script>
 </body>
 </html>
