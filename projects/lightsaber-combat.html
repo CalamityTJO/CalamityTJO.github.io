@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Lightsaber Combat Framework - Calamity</title>
+	<title>Lightsaber Combat System (Contributions) - Calamity</title>
 	<link rel="stylesheet" href="../style.css" />
 </head>
 <body>
@@ -13,7 +13,7 @@
 
 	<div class="project-header">
 		<div class="container">
-			<h1>Lightsaber Combat Framework</h1>
+			<h1>Lightsaber Combat System</h1>
 			<div class="tags"><span>Luau</span><span>Combat</span><span>Server-Authoritative</span></div>
 		</div>
 	</div>
@@ -21,43 +21,31 @@
 	<div class="container project-body">
 		<h2>Overview</h2>
 		<p>
-			A request/response combat system driving all lightsaber interactions: attacks, blocks, parries, and
-			kill confirmation, all sitting between client input and server-validated outcomes, built to stay
-			responsive under real player-count load.
+			I didn't build this framework from scratch, it was already in place when I joined the project, but I
+			work in it regularly and I've made real changes to it. It's a request/response combat system driving
+			lightsaber interactions: attacks, blocks, parries, and kill confirmation, sitting between client input
+			and server-validated outcomes.
 		</p>
 
-		<h2>Problem</h2>
+		<h2>What I've worked on</h2>
 		<p>
-			Melee combat is latency-sensitive. Players expect instant feedback on swings and blocks, but every hit
-			still has to be validated server-side or the game becomes trivially exploitable. The framework needed a
-			clear enum of request types so client and server always agree on what a given signal means, instead of
-			a giant branching mess on either side.
+			Every combat action is a numbered request in <code>CombatConstants.ENUM.REQUEST</code>, and the server
+			validates state (stamina, cooldowns, distance, target legitimacy) before ever trusting a client's claim
+			that a hit landed. One thing I added recently: per-saber-type and per-alignment audio. Different saber
+			types (single, dual, double, and so on) now carry their own ignite, swing, and clash sound sets instead
+			of sharing one generic bucket, and specific crystal alignments can override that further, so a Sith
+			single-blade saber sounds distinct from a Jedi one using the same base type.
 		</p>
+		<pre><code>-- swing sound now resolves per saber type, with an alignment override on top
+local swingSounds = if self.SithSingleBlade then Sounds.Single.Sith.Swing else Sounds[self.SoundIndex].Swing
+local selectedSound = swingSounds[math.random(1, #swingSounds)]</code></pre>
 
-		<h2>Architecture</h2>
+		<h2>Where this leaves me</h2>
 		<p>
-			Every combat action is a numbered request in <code>CombatConstants.ENUM.REQUEST</code>. The client
-			fires a request, the server validates state (stamina, cooldowns, distance, target legitimacy) and
-			responds with the resolved outcome, which the client then plays back as VFX and animation. The server
-			never trusts the client's own read of "did this hit land."
-		</p>
-		<pre><code>-- client: request a swing
-LightsaberSignal:Fire(CombatConstants.ENUM.REQUEST.Swing, { targetId = target })
-
--- server: validate, then respond with resolved outcome
-function Lightsaber:HandleSignal(player, request, arguments)
-	if request == REQUEST.Swing then
-		if not self:CanSwing(player) then return end
-		local resolved = self:ResolveSwing(player, arguments)
-		self.LightsaberSignal:Fire(player, REQUEST.SwingResult, resolved)
-	end
-end</code></pre>
-
-		<h2>Result</h2>
-		<p>
-			A single dispatch point per side keeps combat logic auditable. Every new attack type is just one enum
-			entry and one handler branch, not a new remote. The server stays the single source of truth for hit
-			resolution while client-side playback keeps combat feeling immediate.
+			I'm comfortable working inside an existing combat framework like this one: reading the request/response
+			flow, finding the right seam to extend, and making sure server authority stays intact while I add
+			something new. More broadly, I've got real experience with combat systems as a category, not just this
+			specific codebase.
 		</p>
 	</div>
 

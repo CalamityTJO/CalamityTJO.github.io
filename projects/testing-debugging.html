@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Testing &amp; Debugging Tooling - Calamity</title>
+	<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+	<div class="container">
+		<a class="back-link" href="../index.html">← Back to projects</a>
+	</div>
+
+	<div class="project-header">
+		<div class="container">
+			<h1>Testing &amp; Debugging Tooling</h1>
+			<div class="tags"><span>Luau</span><span>TestEz</span><span>Cmdr</span></div>
+		</div>
+	</div>
+
+	<div class="container project-body">
+		<h2>Overview</h2>
+		<p>
+			A game this size doesn't stay reliable by accident. I write and maintain unit tests for the parts of
+			the codebase where a silent bug is expensive (reducers, action creators, datastore save logic), and I
+			build debug tooling so I can reproduce and chase down issues fast in Studio without needing a full
+			server of real players.
+		</p>
+
+		<h2>Automated tests</h2>
+		<p>
+			Around 40 TestEz spec files cover the Rodux reducers and action creators on both client and server,
+			the replication middleware that decides which actions broadcast versus target a single player, group
+			and rank resolution logic, and daily-challenge mapper functions. Datastore save paths get tested
+			against a mocked DataStoreService, so I can verify save/load behavior without touching a live
+			datastore.
+		</p>
+		<pre><code>-- replication middleware, tested against notReplicated / recipient / broadcast actions
+it("should not replicate actions without a broadcast or recipient meta value", function()
+	replication(nextDispatch)(notReplicatedAction)
+	expect(state.replicated).to.equal(nil)
+end)</code></pre>
+
+		<h2>Debug tooling</h2>
+		<p>
+			On top of automated tests, there's a "Debug" group of Cmdr commands for manual QA: spinning up mock
+			players to test multi-player state without needing real people online, injecting mock kill log
+			entries, and adjusting health/damage live to test edge cases quickly. That combination (automated
+			coverage where a regression would be expensive, fast manual tools for everything else) is how I keep
+			iteration speed up without breaking things in production.
+		</p>
+
+		<h2>Result</h2>
+		<p>
+			Regressions in save logic and replication get caught before they ship, not after a player loses
+			progress. And when something does go wrong in Studio, I've usually got a debug command that gets me
+			to the repro in seconds instead of minutes.
+		</p>
+	</div>
+
+	<footer>
+		<div class="container">Calamity, built with plain HTML/CSS/JS, hosted on GitHub Pages</div>
+	</footer>
+</body>
+</html>
